@@ -12,29 +12,43 @@ public class PhoneBook {
             System.out.println("2. Вывести список всех телефонов");
             System.out.println("3. Выйти");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            if (scanner.hasNextInt()) {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // очистка буфера после nextInt()
 
-            switch (choice) {
-                case 1:
-                    System.out.println("Введите имя:");
-                    String name = scanner.nextLine();
-                    System.out.println("Введите номер телефона:");
-                    String phone = scanner.nextLine();
-                    addContact(phoneBook, name, phone);
-                    break;
-                case 2:
-                    displayPhoneBook(phoneBook);
-                    break;
-                case 3:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Неверный выбор. Пожалуйста, выберите от 1 до 3.");
+                switch (choice) {
+                    case 1:
+                        System.out.println("Введите имя:");
+                        String name = scanner.nextLine();
+                        System.out.println("Введите номер телефона:");
+                        String phone = scanner.nextLine();
+                        if (isNumeric(phone)) {
+                            addContact(phoneBook, name, phone);
+                        } else {
+                            System.out.println("Номер телефона должен содержать только цифры.");
+                        }
+                        break;
+                    case 2:
+                        displayPhoneBook(phoneBook);
+                        break;
+                    case 3:
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Неверный выбор. Пожалуйста, выберите от 1 до 3.");
+                }
+            } else {
+                System.out.println("Неверный ввод. Пожалуйста, введите цифру.");
+                scanner.nextLine();
             }
         }
 
         scanner.close();
+    }
+
+    // Метод для проверки строки на наличие только цифр
+    public static boolean isNumeric(String str) {
+        return str.matches("\\d+");
     }
 
     // Метод для добавления контакта в телефонную книгу
